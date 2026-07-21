@@ -27,5 +27,23 @@ orderObj.on("orderPlaced", (order) => {
     console.log(`Preparing shipment for order #${order.id}`);
 });
 
-//Logging 
+// Logging
+orderObj.on("orderPlaced", (order) => {
+    console.log(`Order #${order.id} placed by ${order.customerName} has been logged.`);
+});
 
+// Error
+orderObj.on("orderPlaced", (err) => {
+    console.error(`Error occurred while placing order: ${err.message}`);
+});
+
+OrderSystem.placeOrder({
+    id: "ORD1001",
+    customerName: "Virat Kohli",
+    email: "virat@cricket.com",
+    items: [
+        { name: "Cricket Bat", quantity: 1 },
+        { name: "Cricket Ball", quantity: 6 }
+    ],
+    total: 250000
+});
