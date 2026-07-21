@@ -37,7 +37,7 @@ orderObj.on("orderPlaced", (err) => {
     console.error(`Error occurred while placing order: ${err.message}`);
 });
 
-OrderSystem.placeOrder({
+orderObj.placeOrder({
     id: "ORD1001",
     customerName: "Virat Kohli",
     email: "virat@cricket.com",
