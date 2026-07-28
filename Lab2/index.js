@@ -1,5 +1,5 @@
 import fs from "fs/promises";
-import {writeFile, readFile} from "fs/promises";
+import {writeFile, readFile, appendFile} from "fs/promises";
 
 //await writeFile("stud.txt"," Arsh Rana \nRollNo: 21");
 //console.log("File written");
@@ -15,5 +15,13 @@ import {writeFile, readFile} from "fs/promises";
       return data;
  };
 
+ const appendData = async (fname, content)=>{
+     await appendFile(fname, "\n"+ content);
+     console.log("data apprehended ");
+ };
+
 await addContent("notes.txt", "FS is easy in JS");
-await console.log(await readContent("notes.txt"));
+ console.log(await readContent("notes.txt"));
+await appendData("notes.txt", "yayayayayaya");
+
+ console.log(await readContent("notes.txt"));
