@@ -1,7 +1,44 @@
 import readline from "readline/promises";
 import {stdin,stdout} from "process";
 const cin=readline.createInterface({input:stdin,output:stdout});
-const main=() => {
+
+
+
+const FILE= "products.json";
+const getCart= async() => {
+    let data= await fs.promises.readFile(FILE,"utf-8");
+    return JSON.parse(data);
+}
+const saveCart= async(cart) => {
+    let data= JSON.stringify(cart);
+    await fs.promises.writeFile(FILE,data,"utf-8");
+}  
+const addToCart= async(product) => {
+    let cart= await getCart();
+    const existingProductIndex = cart.findIndex(item => item.id === product.id);
+    if (existingProductIndex !== -1) {  
+        cart[existingProductIndex].quantity += product.quantity;
+    } else {
+        cart.push(product);
+    }   
+    await saveCart(cart);
+}
+
+const displayCart= async() => {
+    let cart= await getCart();
+    if(cart.length === 0){
+        console.log("Your cart is empty.");
+    } else {
+        console.log("Your cart contains:"); 
+        cart.forEach(item => {
+            console.log(`Product ID: ${item.id}, Name: ${item.name}, Price: ${item.price}, Quantity: ${item.quantity}`);
+        });     
+    }
+}
+
+
+
+const main=async() => {
     let choice;
     do{
         console.log("Welcome to Amazon Shopping Cart🛒 ");
@@ -14,7 +51,7 @@ const main=() => {
 
         switch(Number(choice)){
             case 1:
-                console.log("Show Cart");   
+                await displayCart();
                 break;
             case 2:
                 console.log("Add Product");
@@ -36,5 +73,3 @@ cin.close();
 
 
 main();
-
-
