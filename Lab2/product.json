@@ -4,17 +4,5 @@
     "name": "HP Laptop",
     "price": 47000,
     "qty": 3
-  },
-  {
-    "id": 121,
-    "name": "Ashwani",
-    "price": 69,
-    "qty": 1
-  },
-  {
-    "id": 105,
-    "name": "'S25 Ultra'",
-    "price": 15000,
-    "qty": 4
   }
 ]

@@ -48,6 +48,17 @@ const removeProduct = async (id) => {
 };
 
 const updateQuantity = async (id, qty) => {
+  const cart = await getCart();
+  const index = cart.findIndex((item) => item.id === id);
+  if (index !== -1) {
+    cart[index].qty = Number(qty);
+    await saveCart(cart);
+    console.log(`Quantity of ${cart[index].name} updated to ${qty}`);
+  } else {
+    console.log(`Product with id ${id} not found in the cart.`);
+  }
+};
+
 const main = async () => {
   let choice;
   const cin = readline.createInterface({ input: stdin, output: stdout });
@@ -78,10 +89,13 @@ const main = async () => {
         break;
 
       case 3:
-        console.log("remove product");
+        const idToRemove = await cin.question("Enter the ID of the product to remove: ");
+        await removeProduct(Number(idToRemove));
         break;
       case 4:
-        console.log("update quantity");
+        const idToUpdate = await cin.question("Enter the ID of the product to update: ");
+        const newQty = await cin.question("Enter the new quantity: ");
+        await updateQuantity(Number(idToUpdate), Number(newQty));
         break;
       case 5:
         console.log("checkout");
