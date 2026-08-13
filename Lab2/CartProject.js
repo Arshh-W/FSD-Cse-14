@@ -2,7 +2,6 @@ import readline from "readline/promises";
 import { stdin, stdout } from "process";
 import { readFile, writeFile } from "fs/promises";
 
-// Database using file starts
 const FILE = "product.json";
 
 const getCart = async () => {
@@ -47,13 +46,13 @@ const removeProduct = async (id) => {
   }
 };
 
-const updateQuantity = async (id, qty) => {
+const updateQuantity = async (id) => {
   const cart = await getCart();
   const index = cart.findIndex((item) => item.id === id);
   if (index !== -1) {
-    cart[index].qty = Number(qty);
+    cart[index].qty = cart[index].qty-1;
     await saveCart(cart);
-    console.log(`Quantity of ${cart[index].name} updated to ${qty}`);
+    console.log(`Quantity of ${cart[index].name} updated`);
   } else {
     console.log(`Product with id ${id} not found in the cart.`);
   }
@@ -94,8 +93,7 @@ const main = async () => {
         break;
       case 4:
         const idToUpdate = await cin.question("Enter the ID of the product to update: ");
-        const newQty = await cin.question("Enter the new quantity: ");
-        await updateQuantity(Number(idToUpdate), Number(newQty));
+        await updateQuantity(Number(idToUpdate));
         break;
       case 5:
         console.log("checkout");
