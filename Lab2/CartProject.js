@@ -35,6 +35,19 @@ const displayCart = async () => {
   console.log(`Total payble amount Rs. ${total}`);
 };
 
+const removeProduct = async (id) => {
+  const cart = await getCart();
+  const index = cart.findIndex((item) => item.id === id);
+  if (index !== -1) {
+    const removedItem = cart.splice(index, 1)[0];
+    await saveCart(cart);
+    console.log(`${removedItem.name} removed from 🛒`);
+  } else {
+    console.log(`Product with id ${id} not found in the cart.`);
+  }
+};
+
+const updateQuantity = async (id, qty) => {
 const main = async () => {
   let choice;
   const cin = readline.createInterface({ input: stdin, output: stdout });
