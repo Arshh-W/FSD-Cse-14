@@ -49,6 +49,10 @@ const removeProduct = async (id) => {
 const updateQuantity = async (id) => {
   const cart = await getCart();
   const index = cart.findIndex((item) => item.id === id);
+  if (cart[index].qty === 1) {
+    removeProduct(id);
+    await saveCart(cart);
+  }
   if (index !== -1) {
     cart[index].qty = cart[index].qty-1;
     await saveCart(cart);
