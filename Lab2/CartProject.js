@@ -3,7 +3,7 @@ import { stdin, stdout } from "process";
 import { readFile, writeFile } from "fs/promises";
 
 const FILE = "product.json";
-
+  const cin = readline.createInterface({ input: stdin, output: stdout });
 const getCart = async () => {
   const data = await readFile(FILE, "utf-8");
   return JSON.parse(data);
@@ -51,10 +51,18 @@ const updateQuantity = async (id) => {
   const index = cart.findIndex((item) => item.id === id);
   if (cart[index].qty === 1) {
     removeProduct(id);
-    await saveCart(cart);
   }
   if (index !== -1) {
-    cart[index].qty = cart[index].qty-1;
+    let op= await cin.question("Increase(I) or Decrease(D)");
+    let add;
+  if(op==='I'){
+   add = 1;
+  }
+  else{
+    add = -1;
+  }
+
+    cart[index].qty = cart[index].qty+add;
     await saveCart(cart);
     console.log(`Quantity of ${cart[index].name} updated`);
   } else {
@@ -64,7 +72,7 @@ const updateQuantity = async (id) => {
 
 const main = async () => {
   let choice;
-  const cin = readline.createInterface({ input: stdin, output: stdout });
+
 
   do {
     console.log("\n\nWelcome to Amazon Shopping 🛒");
