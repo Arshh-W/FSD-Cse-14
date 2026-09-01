@@ -1,0 +1,112 @@
+[
+  {
+    "name": "iPhone 17 Pro",
+    "brand": "Apple",
+    "price": 1199,
+    "display": "6.3-inch OLED",
+    "ram": "12GB",
+    "storage": "256GB",
+    "camera": "48MP Triple Camera",
+    "battery": "4000mAh",
+    "os": "iOS 26"
+  },
+  {
+    "name": "Galaxy S26 Ultra",
+    "brand": "Samsung",
+    "price": 1299,
+    "display": "6.9-inch AMOLED",
+    "ram": "12GB",
+    "storage": "256GB",
+    "camera": "200MP Quad Camera",
+    "battery": "5000mAh",
+    "os": "Android 16"
+  },
+  {
+    "name": "Pixel 10 Pro",
+    "brand": "Google",
+    "price": 999,
+    "display": "6.3-inch OLED",
+    "ram": "16GB",
+    "storage": "256GB",
+    "camera": "50MP Triple Camera",
+    "battery": "4870mAh",
+    "os": "Android 16"
+  },
+  {
+    "name": "OnePlus 13",
+    "brand": "OnePlus",
+    "price": 899,
+    "display": "6.82-inch AMOLED",
+    "ram": "16GB",
+    "storage": "512GB",
+    "camera": "50MP Triple Camera",
+    "battery": "6000mAh",
+    "os": "Android 15"
+  },
+  {
+    "name": "Xiaomi 15 Ultra",
+    "brand": "Xiaomi",
+    "price": 1099,
+    "display": "6.73-inch AMOLED",
+    "ram": "16GB",
+    "storage": "512GB",
+    "camera": "200MP Quad Camera",
+    "battery": "5410mAh",
+    "os": "Android 15"
+  },
+  {
+    "name": "Nothing Phone (3)",
+    "brand": "Nothing",
+    "price": 799,
+    "display": "6.67-inch OLED",
+    "ram": "12GB",
+    "storage": "256GB",
+    "camera": "50MP Triple Camera",
+    "battery": "5150mAh",
+    "os": "Android 15"
+  },
+  {
+    "name": "Sony Xperia 1 VII",
+    "brand": "Sony",
+    "price": 1399,
+    "display": "6.5-inch OLED",
+    "ram": "12GB",
+    "storage": "256GB",
+    "camera": "48MP Triple Camera",
+    "battery": "5000mAh",
+    "os": "Android 15"
+  },
+  {
+    "name": "ASUS ROG Phone 9",
+    "brand": "ASUS",
+    "price": 999,
+    "display": "6.78-inch AMOLED",
+    "ram": "16GB",
+    "storage": "512GB",
+    "camera": "50MP Triple Camera",
+    "battery": "5800mAh",
+    "os": "Android 15"
+  },
+  {
+    "name": "Motorola Edge 60 Pro",
+    "brand": "Motorola",
+    "price": 699,
+    "display": "6.7-inch OLED",
+    "ram": "12GB",
+    "storage": "256GB",
+    "camera": "50MP Triple Camera",
+    "battery": "6000mAh",
+    "os": "Android 15"
+  },
+  {
+    "name": "OnePlus Nord 5",
+    "brand": "OnePlus",
+    "price": 499,
+    "display": "6.83-inch AMOLED",
+    "ram": "12GB",
+    "storage": "256GB",
+    "camera": "50MP Dual Camera",
+    "battery": "6800mAh",
+    "os": "Android 15"
+  }
+]
