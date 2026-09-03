@@ -1,731 +1,456 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>AirTag — Find My</title>
-
-  <style>
-    :root {
-      --black: #1d1d1f;
-      --gray: #6e6e73;
-      --light: #f5f5f7;
-      --blue: #0071e3;
-      --white: #ffffff;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
-                   "SF Pro Text", Helvetica, Arial, sans-serif;
-      color: var(--black);
-      background: var(--white);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* NAVIGATION */
-
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      height: 52px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 0 7%;
-
-      background: rgba(255,255,255,0.82);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-
-      border-bottom: 1px solid rgba(0,0,0,0.08);
-    }
-
-    .apple-logo {
-      font-size: 21px;
-      font-weight: 600;
-    }
-
-    .nav-title {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-
-      font-size: 15px;
-      font-weight: 600;
-    }
-
-    nav a {
-      color: var(--black);
-      text-decoration: none;
-      font-size: 13px;
-      margin-left: 25px;
-      transition: opacity .2s;
-    }
-
-    nav a:hover {
-      opacity: .55;
-    }
-
-    .buy-small {
-      background: var(--blue);
-      color: white !important;
-      padding: 7px 15px;
-      border-radius: 20px;
-    }
-
-    /* HERO */
-
-    .hero {
-      min-height: calc(100vh - 52px);
-
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      text-align: center;
-
-      padding: 80px 20px;
-
-      background:
-        radial-gradient(circle at 50% 45%,
-        #ffffff 0%,
-        #f8f8fa 45%,
-        #eeeeF2 100%);
-    }
-
-    .eyebrow {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--gray);
-      margin-bottom: 15px;
-    }
-
-    .hero h1 {
-      font-size: clamp(60px, 9vw, 120px);
-      letter-spacing: -0.06em;
-      line-height: .95;
-      font-weight: 700;
-      margin-bottom: 25px;
-    }
-
-    .hero-text {
-      max-width: 650px;
-      font-size: clamp(22px, 3vw, 32px);
-      line-height: 1.2;
-      letter-spacing: -0.025em;
-      color: #424245;
-    }
-
-    /* AIRTAG */
-
-    .airtag-container {
-      margin: 75px 0 45px;
-      perspective: 1000px;
-    }
-
-    .airtag {
-      width: 270px;
-      height: 270px;
-
-      border-radius: 50%;
-
-      position: relative;
-
-      background:
-        radial-gradient(
-          circle at 50% 45%,
-          #ffffff 0%,
-          #f9f9f9 45%,
-          #dedede 100%
-        );
-
-      box-shadow:
-        0 35px 70px rgba(0,0,0,.20),
-        inset 0 -8px 15px rgba(0,0,0,.08);
-
-      transition: transform .6s cubic-bezier(.2,.8,.2,1);
-    }
-
-    .airtag:hover {
-      transform: rotateX(8deg) rotateY(-8deg) scale(1.04);
-    }
-
-    .airtag-logo {
-      position: absolute;
-      left: 50%;
-      top: 48%;
-
-      transform: translate(-50%, -50%);
-
-      font-size: 65px;
-      color: #a5a5a5;
-      font-weight: 500;
-    }
-
-    .airtag-ring {
-      position: absolute;
-
-      width: 50px;
-      height: 50px;
-
-      border-radius: 50%;
-
-      left: 50%;
-      bottom: 17px;
-
-      transform: translateX(-50%);
-
-      background: #fff;
-
-      box-shadow:
-        inset 0 2px 5px rgba(0,0,0,.12),
-        0 2px 5px rgba(0,0,0,.05);
-    }
-
-    /* BUTTON */
-
-    .button {
-      display: inline-block;
-
-      padding: 13px 23px;
-
-      border-radius: 25px;
-
-      background: var(--blue);
-      color: white;
-
-      text-decoration: none;
-
-      font-size: 17px;
-      font-weight: 500;
-
-      transition:
-        transform .2s,
-        background .2s;
-    }
-
-    .button:hover {
-      background: #0077ed;
-      transform: scale(1.03);
-    }
-
-    /* INTRO */
-
-    .intro {
-      padding: 160px 10%;
-      text-align: center;
-    }
-
-    .intro h2 {
-      max-width: 1000px;
-      margin: auto;
-
-      font-size: clamp(45px, 7vw, 85px);
-      line-height: 1;
-      letter-spacing: -.055em;
-    }
-
-    .gradient-text {
-      background: linear-gradient(
-        90deg,
-        #111,
-        #777,
-        #111
-      );
-
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    /* FEATURES */
-
-    .features {
-      background: var(--light);
-      padding: 130px 7%;
-    }
-
-    .section-label {
-      text-align: center;
-      color: var(--gray);
-      font-size: 18px;
-      margin-bottom: 15px;
-    }
-
-    .features h2 {
-      text-align: center;
-      font-size: clamp(42px, 6vw, 70px);
-      letter-spacing: -.05em;
-      margin-bottom: 70px;
-    }
-
-    .feature-grid {
-      max-width: 1200px;
-      margin: auto;
-
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 25px;
-    }
-
-    .feature {
-      min-height: 370px;
-
-      padding: 45px;
-
-      border-radius: 30px;
-
-      background: white;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-
-      box-shadow: 0 5px 30px rgba(0,0,0,.04);
-
-      transition:
-        transform .3s,
-        box-shadow .3s;
-    }
-
-    .feature:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 50px rgba(0,0,0,.09);
-    }
-
-    .feature-icon {
-      font-size: 55px;
-    }
-
-    .feature h3 {
-      font-size: 28px;
-      letter-spacing: -.03em;
-      margin-bottom: 12px;
-    }
-
-    .feature p {
-      color: var(--gray);
-      font-size: 17px;
-      line-height: 1.5;
-    }
-
-    /* FIND MY */
-
-    .find-section {
-      background: #000;
-      color: white;
-
-      padding: 150px 8%;
-
-      text-align: center;
-    }
-
-    .find-section h2 {
-      font-size: clamp(50px, 8vw, 100px);
-      letter-spacing: -.06em;
-      line-height: .95;
-      margin-bottom: 30px;
-    }
-
-    .find-section p {
-      max-width: 650px;
-      margin: auto;
-
-      color: #aaa;
-
-      font-size: 22px;
-      line-height: 1.4;
-    }
-
-    .radar {
-      width: 330px;
-      height: 330px;
-
-      border-radius: 50%;
-
-      margin: 80px auto 0;
-
-      background:
-        radial-gradient(
-          circle,
-          transparent 0 18%,
-          rgba(255,255,255,.04) 18% 19%,
-          transparent 19% 38%,
-          rgba(255,255,255,.04) 38% 39%,
-          transparent 39% 58%,
-          rgba(255,255,255,.04) 58% 59%,
-          transparent 59%
-        );
-
-      border: 1px solid #333;
-
-      position: relative;
-
-      animation: pulse 3s infinite;
-    }
-
-    .radar-dot {
-      position: absolute;
-
-      width: 16px;
-      height: 16px;
-
-      background: #fff;
-
-      border-radius: 50%;
-
-      top: 50%;
-      left: 50%;
-
-      transform: translate(-50%, -50%);
-
-      box-shadow:
-        0 0 0 10px rgba(255,255,255,.08),
-        0 0 30px rgba(255,255,255,.7);
-    }
-
-    @keyframes pulse {
-      0%,100% {
-        transform: scale(.96);
-        opacity: .7;
-      }
-
-      50% {
-        transform: scale(1.03);
-        opacity: 1;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareerMap | Football Career Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            pitch: '#0f172a',
+            card: '#1e293b',
+            accent: '#10b981',
+            accentHover: '#059669',
+          }
+        }
       }
     }
-
-    /* BUY */
-
-    .buy-section {
-      padding: 150px 20px;
-
-      text-align: center;
-
-      background:
-        linear-gradient(
-          #fff,
-          #f5f5f7
-        );
-    }
-
-    .buy-section h2 {
-      font-size: clamp(50px, 7vw, 80px);
-      letter-spacing: -.055em;
-      margin-bottom: 15px;
-    }
-
-    .price {
-      font-size: 21px;
-      color: var(--gray);
-      margin-bottom: 30px;
-    }
-
-    /* FOOTER */
-
-    footer {
-      background: #f5f5f7;
-
-      border-top: 1px solid #ddd;
-
-      padding: 30px 8%;
-
-      color: #6e6e73;
-
-      font-size: 12px;
-
-      text-align: center;
-    }
-
-    /* MOBILE */
-
-    @media (max-width: 800px) {
-
-      nav {
-        padding: 0 20px;
-      }
-
-      .nav-title {
-        display: none;
-      }
-
-      nav a {
-        margin-left: 12px;
-      }
-
-      .hero {
-        min-height: 90vh;
-      }
-
-      .airtag {
-        width: 210px;
-        height: 210px;
-      }
-
-      .airtag-logo {
-        font-size: 50px;
-      }
-
-      .airtag-ring {
-        width: 40px;
-        height: 40px;
-        bottom: 13px;
-      }
-
-      .intro {
-        padding: 100px 25px;
-      }
-
-      .features {
-        padding: 100px 20px;
-      }
-
-      .feature-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .feature {
-        min-height: 300px;
-      }
-
-      .find-section {
-        padding: 100px 25px;
-      }
-
-      .radar {
-        width: 260px;
-        height: 260px;
-      }
-
-      .buy-section {
-        padding: 100px 20px;
-      }
-    }
-  </style>
+  </script>
 </head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased pb-20">
 
-<body>
-
-  <!-- NAVIGATION -->
-
-  <nav>
-
-    <div class="apple-logo">●</div>
-
-    <div class="nav-title">
-      AirTag
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i class="ph ph-soccer-ball text-emerald-400 text-2xl"></i>
+        <h1 class="text-xl font-bold tracking-tight text-white">Career<span class="text-emerald-400">Map</span></h1>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="exportData()" class="px-3 py-1.5 text-xs font-semibold rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+          <i class="ph ph-export"></i> Export JSON
+        </button>
+        <label class="px-3 py-1.5 text-xs font-semibold rounded bg-slate-800 hover:bg-slate-700 text-slate-300 cursor-pointer transition">
+          <i class="ph ph-import"></i> Import JSON
+          <input type="file" id="importInput" accept=".json" class="hidden" onchange="importData(event)" />
+        </label>
+        <button onclick="resetCareer()" class="px-3 py-1.5 text-xs font-semibold rounded bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-800/50 transition">
+          <i class="ph ph-trash"></i> Reset
+        </button>
+      </div>
     </div>
+  </header>
 
-    <div>
-      <a href="#features">Features</a>
-      <a href="#buy" class="buy-small">Buy</a>
-    </div>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 space-y-6">
 
-  </nav>
-
-
-  <!-- HERO -->
-
-  <section class="hero">
-
-    <div class="eyebrow">
-      AirTag
-    </div>
-
-    <h1>
-      Lose your knack<br>
-      for losing things.
-    </h1>
-
-    <p class="hero-text">
-      AirTag is an easy way to keep track of your
-      belongings and find them when they're missing.
-    </p>
-
-    <div class="airtag-container">
-
-      <div class="airtag">
-
-        <div class="airtag-logo">
-          
-        </div>
-
-        <div class="airtag-ring"></div>
-
+    <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+      <div class="absolute -right-10 -bottom-10 opacity-5 pointer-events-none">
+        <i class="ph ph-trophy text-[220px]"></i>
       </div>
 
-    </div>
-
-    <a href="#buy" class="button">
-      Buy AirTag
-    </a>
-
-  </section>
-
-
-  <!-- BIG STATEMENT -->
-
-  <section class="intro">
-
-    <h2>
-      <span class="gradient-text">
-        Find what matters.
-      </span>
-      <br>
-      Without the stress.
-    </h2>
-
-  </section>
-
-
-  <!-- FEATURES -->
-
-  <section class="features" id="features">
-
-    <div class="section-label">
-      Features
-    </div>
-
-    <h2>
-      Find it. Fast.
-    </h2>
-
-    <div class="feature-grid">
-
-      <div class="feature">
-
-        <div class="feature-icon">
-          ◎
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
+        <div class="md:col-span-1 border-b md:border-b-0 md:border-r border-slate-800 pb-4 md:pb-0 md:pr-6 space-y-3">
+          <div>
+            <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Player Name</label>
+            <input type="text" id="playerName" value="Alex Mercer" onchange="saveProfile()" 
+                   class="w-full bg-slate-800/80 border border-slate-700 rounded-lg px-3 py-1.5 text-white font-bold text-lg focus:outline-none focus:border-emerald-400" />
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Position</label>
+              <select id="playerPosition" onchange="saveProfile()" class="w-full bg-slate-800/80 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm text-slate-200 focus:outline-none focus:border-emerald-400">
+                <option value="ST / CF">ST / CF</option>
+                <option value="LW / RW">LW / RW</option>
+                <option value="CAM / AM">CAM / AM</option>
+                <option value="CM / CDM">CM / CDM</option>
+                <option value="CB / LB / RB">CB / Fullback</option>
+                <option value="GK">Goalkeeper</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Nationality</label>
+              <input type="text" id="playerNation" value="England" onchange="saveProfile()" 
+                     class="w-full bg-slate-800/80 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm text-slate-200 focus:outline-none focus:border-emerald-400" />
+            </div>
+          </div>
+          <div>
+            <label class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Start Year (Age 16)</label>
+            <input type="number" id="startYear" value="2018" min="1970" max="2050" onchange="updateStartYear()"
+                   class="w-full bg-slate-800/80 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm text-slate-200 focus:outline-none focus:border-emerald-400" />
+          </div>
         </div>
 
+        <div class="md:col-span-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div class="bg-slate-800/50 border border-slate-700/60 p-3.5 rounded-xl">
+            <span class="text-xs text-slate-400 font-medium">Appearances</span>
+            <p id="totalApps" class="text-2xl font-black text-white mt-1">0</p>
+          </div>
+          <div class="bg-slate-800/50 border border-slate-700/60 p-3.5 rounded-xl">
+            <span class="text-xs text-emerald-400 font-medium">Goals</span>
+            <p id="totalGoals" class="text-2xl font-black text-emerald-400 mt-1">0</p>
+          </div>
+          <div class="bg-slate-800/50 border border-slate-700/60 p-3.5 rounded-xl">
+            <span class="text-xs text-cyan-400 font-medium">Assists</span>
+            <p id="totalAssists" class="text-2xl font-black text-cyan-400 mt-1">0</p>
+          </div>
+          <div class="bg-slate-800/50 border border-slate-700/60 p-3.5 rounded-xl">
+            <span class="text-xs text-yellow-400 font-medium">G/A per App</span>
+            <p id="gaPerMatch" class="text-2xl font-black text-yellow-400 mt-1">0.00</p>
+          </div>
+          <div class="bg-slate-800/50 border border-slate-700/60 p-3.5 rounded-xl">
+            <span class="text-xs text-purple-400 font-medium">Trophies</span>
+            <p id="totalTrophies" class="text-2xl font-black text-purple-400 mt-1">0</p>
+          </div>
+          <div class="bg-slate-800/50 border border-slate-700/60 p-3.5 rounded-xl">
+            <span class="text-xs text-amber-400 font-medium">Total Fees</span>
+            <p id="totalFees" class="text-xl font-black text-amber-400 mt-1 truncate">€0M</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+      <div class="p-4 sm:p-5 border-b border-slate-800 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h3>
-            Precision Finding
-          </h3>
-
-          <p>
-            Get directions to your AirTag with
-            visual, audible and haptic guidance.
-          </p>
+          <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            <i class="ph ph-calendar-blank text-emerald-400"></i> Season Roadmap (Ages 16 – 40)
+          </h2>
+          <p class="text-xs text-slate-400 mt-0.5">Click any row or the edit button to update statistics.</p>
         </div>
-
       </div>
 
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm border-collapse">
+          <thead>
+            <tr class="bg-slate-950/70 border-b border-slate-800 text-[11px] font-semibold tracking-wider text-slate-400 uppercase">
+              <th class="p-3 pl-4">Age / Season</th>
+              <th class="p-3">Club / Status</th>
+              <th class="p-3 text-center">Apps</th>
+              <th class="p-3 text-center">G</th>
+              <th class="p-3 text-center">A</th>
+              <th class="p-3">Fee</th>
+              <th class="p-3">Trophies</th>
+              <th class="p-3">International / Honours</th>
+              <th class="p-3 text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody id="seasonTableBody" class="divide-y divide-slate-800/60 font-medium">
+            </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
-      <div class="feature">
-
-        <div class="feature-icon">
-          ◉
-        </div>
-
-        <div>
-          <h3>
-            Play a Sound
-          </h3>
-
-          <p>
-            If your item is nearby, make your
-            AirTag play a sound to help you find it.
-          </p>
-        </div>
-
+  <div id="seasonModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-xl p-6 shadow-2xl relative">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
+        <h3 id="modalTitle" class="text-lg font-bold text-white">Edit Season: Age 16</h3>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-white text-xl">
+          <i class="ph ph-x"></i>
+        </button>
       </div>
 
+      <form id="seasonForm" onsubmit="handleModalSubmit(event)" class="space-y-4">
+        <input type="hidden" id="modalIndex" />
 
-      <div class="feature">
-
-        <div class="feature-icon">
-          ∞
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs text-slate-400 font-semibold block mb-1">Parent / Primary Club</label>
+            <input type="text" id="modalClub" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-400" placeholder="e.g. Real Madrid" />
+          </div>
+          <div>
+            <label class="text-xs text-slate-400 font-semibold block mb-1">Status</label>
+            <select id="modalLoan" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-400">
+              <option value="Permanent">Permanent</option>
+              <option value="Loan">On Loan</option>
+              <option value="Free Agent">Free Agent / Retired</option>
+            </select>
+          </div>
         </div>
 
-        <div>
-          <h3>
-            Find My Network
-          </h3>
-
-          <p>
-            A vast network of devices can help
-            locate your lost item from farther away.
-          </p>
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="text-xs text-slate-400 font-semibold block mb-1">Apps</label>
+            <input type="number" id="modalApps" min="0" value="0" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-400" />
+          </div>
+          <div>
+            <label class="text-xs text-emerald-400 font-semibold block mb-1">Goals</label>
+            <input type="number" id="modalGoals" min="0" value="0" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-400" />
+          </div>
+          <div>
+            <label class="text-xs text-cyan-400 font-semibold block mb-1">Assists</label>
+            <input type="number" id="modalAssists" min="0" value="0" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-400" />
+          </div>
         </div>
 
-      </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs text-slate-400 font-semibold block mb-1">Transfer Fee (€ Millions)</label>
+            <input type="number" step="0.5" min="0" id="modalFee" value="0" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-400" placeholder="0" />
+          </div>
+          <div>
+            <label class="text-xs text-slate-400 font-semibold block mb-1">Club Trophies (comma separated)</label>
+            <input type="text" id="modalTrophies" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-400" placeholder="e.g. UCL, La Liga" />
+          </div>
+        </div>
 
+        <div class="border-t border-slate-800 pt-3">
+          <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">International Duty & Honours</h4>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-xs text-slate-400 font-semibold block mb-1">Tournament / Major Campaign</label>
+              <input type="text" id="modalIntTourney" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-400" placeholder="e.g. World Cup (Winner)" />
+            </div>
+            <div class="flex items-center gap-2 pt-6">
+              <input type="checkbox" id="modalGoldenBoot" class="w-4 h-4 rounded border-slate-700 text-emerald-500 focus:ring-0 cursor-pointer" />
+              <label for="modalGoldenBoot" class="text-xs text-yellow-300 font-medium cursor-pointer">Won Golden Boot / Top Scorer</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-4">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">Cancel</button>
+          <button type="submit" class="px-4 py-2 text-xs font-bold rounded-lg bg-emerald-500 hover:bg-emerald-600 text-slate-950 transition">Save Season</button>
+        </div>
+      </form>
     </div>
+  </div>
 
-  </section>
+  <script>
+    const STORAGE_KEY = 'FOOTBALL_CAREER_MAP_DATA';
 
+    // Base schema
+    let careerData = {
+      profile: {
+        name: "Alex Mercer",
+        position: "ST / CF",
+        nationality: "England",
+        startYear: 2018
+      },
+      seasons: []
+    };
 
-  <!-- FIND MY -->
+    function initSeasons(startYear) {
+      const list = [];
+      for (let age = 16; age <= 40; age++) {
+        const offset = age - 16;
+        const seasonYear = `${startYear + offset}/${(startYear + offset + 1).toString().slice(-2)}`;
+        
+        // Dummy profile curve
+        let club = "Academy";
+        let status = "Permanent";
+        let apps = 0, goals = 0, assists = 0, fee = 0, trophies = "", intTourney = "", goldenBoot = false;
 
-  <section class="find-section">
+        if (age === 16) { club = "Youth Academy"; apps = 4; goals = 1; assists = 1; }
+        else if (age === 17) { club = "Sunderland"; status = "Loan"; apps = 28; goals = 9; assists = 5; }
+        else if (age === 18) { club = "Arsenal"; apps = 34; goals = 14; assists = 7; fee = 15; trophies = "FA Cup"; }
+        else if (age === 22) { club = "Real Madrid"; apps = 48; goals = 38; assists = 14; fee = 110; trophies = "La Liga, UCL"; intTourney = "World Cup"; goldenBoot = true; }
 
-    <h2>
-      Lost?
-      <br>
-      Not for long.
-    </h2>
+        list.push({ age, seasonYear, club, status, apps, goals, assists, fee, trophies, intTourney, goldenBoot });
+      }
+      return list;
+    }
 
-    <p>
-      AirTag works with the Find My network,
-      helping you locate your belongings even
-      when they're not nearby.
-    </p>
+    // Load from LocalStorage
+    function loadData() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          careerData = JSON.parse(saved);
+        } catch (e) {
+          console.error("Failed to parse storage, using default", e);
+          careerData.seasons = initSeasons(careerData.profile.startYear);
+        }
+      } else {
+        careerData.seasons = initSeasons(careerData.profile.startYear);
+      }
+      syncInputs();
+      render();
+    }
 
-    <div class="radar">
+    function syncInputs() {
+      document.getElementById('playerName').value = careerData.profile.name;
+      document.getElementById('playerPosition').value = careerData.profile.position;
+      document.getElementById('playerNation').value = careerData.profile.nationality;
+      document.getElementById('startYear').value = careerData.profile.startYear;
+    }
 
-      <div class="radar-dot"></div>
+    function saveToStorage() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(careerData));
+    }
 
-    </div>
+    function saveProfile() {
+      careerData.profile.name = document.getElementById('playerName').value;
+      careerData.profile.position = document.getElementById('playerPosition').value;
+      careerData.profile.nationality = document.getElementById('playerNation').value;
+      saveToStorage();
+    }
 
-  </section>
+    function updateStartYear() {
+      const newStart = parseInt(document.getElementById('startYear').value) || 2020;
+      careerData.profile.startYear = newStart;
+      careerData.seasons.forEach((s, idx) => {
+        s.seasonYear = `${newStart + idx}/${(newStart + idx + 1).toString().slice(-2)}`;
+      });
+      saveToStorage();
+      render();
+    }
 
+    function render() {
+      const tbody = document.getElementById('seasonTableBody');
+      tbody.innerHTML = '';
 
-  <!-- BUY -->
+      let totalApps = 0, totalGoals = 0, totalAssists = 0, totalTrophiesCount = 0, totalFees = 0, goldenBootsCount = 0;
 
-  <section class="buy-section" id="buy">
+      careerData.seasons.forEach((s, index) => {
+        totalApps += Number(s.apps || 0);
+        totalGoals += Number(s.goals || 0);
+        totalAssists += Number(s.assists || 0);
+        totalFees += Number(s.fee || 0);
 
-    <h2>
-      AirTag
-    </h2>
+        if (s.trophies && s.trophies.trim() !== '') {
+          totalTrophiesCount += s.trophies.split(',').filter(t => t.trim() !== '').length;
+        }
+        if (s.goldenBoot) goldenBootsCount++;
 
-    <p class="price">
-      A simple way to keep track of your stuff.
-    </p>
+        const isLoan = s.status === 'Loan';
+        const isFree = s.status === 'Free Agent';
 
-    <a href="#" class="button">
-      Buy
-    </a>
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-800/40 border-b border-slate-800/50 transition cursor-pointer";
+        tr.onclick = (e) => {
+          if (!e.target.closest('button')) openEditModal(index);
+        };
 
-  </section>
+        tr.innerHTML = `
+          <td class="p-3 pl-4">
+            <div class="font-bold text-slate-200">Age ${s.age}</div>
+            <div class="text-[11px] text-slate-400">${s.seasonYear}</div>
+          </td>
+          <td class="p-3">
+            <div class="flex items-center gap-2">
+              <span class="font-semibold text-slate-100">${s.club || '—'}</span>
+              ${isLoan ? '<span class="px-1.5 py-0.5 text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded">Loan</span>' : ''}
+              ${isFree ? '<span class="px-1.5 py-0.5 text-[10px] bg-slate-700 text-slate-400 rounded">Free Agent</span>' : ''}
+            </div>
+          </td>
+          <td class="p-3 text-center text-slate-300 font-mono">${s.apps}</td>
+          <td class="p-3 text-center text-emerald-400 font-mono font-bold">${s.goals}</td>
+          <td class="p-3 text-center text-cyan-400 font-mono">${s.assists}</td>
+          <td class="p-3 text-slate-300 font-mono">${s.fee > 0 ? '€' + s.fee + 'M' : '—'}</td>
+          <td class="p-3">
+            <div class="flex flex-wrap gap-1">
+              ${s.trophies ? s.trophies.split(',').map(t => `<span class="px-1.5 py-0.5 bg-purple-950/60 border border-purple-800/60 text-purple-300 text-[10px] rounded flex items-center gap-1"><i class="ph ph-trophy"></i> ${t.trim()}</span>`).join('') : '<span class="text-slate-500">—</span>'}
+            </div>
+          </td>
+          <td class="p-3">
+            <div class="flex flex-wrap items-center gap-1.5">
+              ${s.intTourney ? `<span class="px-1.5 py-0.5 bg-blue-950/60 border border-blue-800/60 text-blue-300 text-[11px] rounded">${s.intTourney}</span>` : '<span class="text-slate-500">—</span>'}
+              ${s.goldenBoot ? '<span title="Golden Boot Winner" class="px-1.5 py-0.5 bg-yellow-500/20 border border-yellow-500/40 text-yellow-300 text-[10px] rounded font-bold">🥇 Golden Boot</span>' : ''}
+            </div>
+          </td>
+          <td class="p-3 text-center">
+            <button onclick="openEditModal(${index})" class="p-1.5 hover:bg-slate-700 text-slate-400 hover:text-emerald-400 rounded transition">
+              <i class="ph ph-pencil-simple text-base"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
 
+      // Update KPI Bar
+      document.getElementById('totalApps').innerText = totalApps;
+      document.getElementById('totalGoals').innerText = totalGoals;
+      document.getElementById('totalAssists').innerText = totalAssists;
+      document.getElementById('gaPerMatch').innerText = totalApps > 0 ? ((totalGoals + totalAssists) / totalApps).toFixed(2) : "0.00";
+      document.getElementById('totalTrophies').innerText = totalTrophiesCount;
+      document.getElementById('totalFees').innerText = `€${totalFees.toFixed(1)}M`;
+    }
 
-  <!-- FOOTER -->
+    // Modal Operations
+    function openEditModal(index) {
+      const s = careerData.seasons[index];
+      document.getElementById('modalIndex').value = index;
+      document.getElementById('modalTitle').innerText = `Edit Season: Age ${s.age} (${s.seasonYear})`;
+      document.getElementById('modalClub').value = s.club || '';
+      document.getElementById('modalLoan').value = s.status || 'Permanent';
+      document.getElementById('modalApps').value = s.apps;
+      document.getElementById('modalGoals').value = s.goals;
+      document.getElementById('modalAssists').value = s.assists;
+      document.getElementById('modalFee').value = s.fee;
+      document.getElementById('modalTrophies').value = s.trophies || '';
+      document.getElementById('modalIntTourney').value = s.intTourney || '';
+      document.getElementById('modalGoldenBoot').checked = !!s.goldenBoot;
 
-  <footer>
+      document.getElementById('seasonModal').classList.remove('hidden');
+    }
 
-    This is an independent educational demo
-    inspired by modern minimalist product design.
-    Not affiliated with Apple Inc.
+    function closeModal() {
+      document.getElementById('seasonModal').classList.add('hidden');
+    }
 
-  </footer>
+    function handleModalSubmit(e) {
+      e.preventDefault();
+      const idx = parseInt(document.getElementById('modalIndex').value);
+      careerData.seasons[idx] = {
+        ...careerData.seasons[idx],
+        club: document.getElementById('modalClub').value,
+        status: document.getElementById('modalLoan').value,
+        apps: Number(document.getElementById('modalApps').value),
+        goals: Number(document.getElementById('modalGoals').value),
+        assists: Number(document.getElementById('modalAssists').value),
+        fee: Number(document.getElementById('modalFee').value),
+        trophies: document.getElementById('modalTrophies').value,
+        intTourney: document.getElementById('modalIntTourney').value,
+        goldenBoot: document.getElementById('modalGoldenBoot').checked
+      };
 
+      saveToStorage();
+      render();
+      closeModal();
+    }
 
+    // Export / Import / Reset
+    function exportData() {
+      const blob = new Blob([JSON.stringify(careerData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${careerData.profile.name.replace(/\s+/g, '_')}_CareerMap.json`;
+      a.click();
+    }
+
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          careerData = JSON.parse(e.target.result);
+          syncInputs();
+          saveToStorage();
+          render();
+        } catch (err) {
+          alert('Invalid JSON file.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetCareer() {
+      if (confirm("Are you sure you want to reset all stats? This cannot be undone unless you exported a JSON.")) {
+        localStorage.removeItem(STORAGE_KEY);
+        careerData.seasons = initSeasons(careerData.profile.startYear);
+        render();
+      }
+    }
+
+    // Initialize
+    loadData();
+  </script>
 </body>
 </html>
